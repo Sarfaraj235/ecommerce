@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://ecommerce-server-production-a7de.up.railway.app"
+export const API_BASE_URL = "https://ecommerce-server-production-400f.up.railway.app"
 
 export const isValidJwt = (token) =>
     typeof token === "string" &&
