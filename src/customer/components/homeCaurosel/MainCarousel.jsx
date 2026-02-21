@@ -5,7 +5,15 @@ import { MainCarouselData } from './mainCarouselData';
 
 function MainCarousel(){
 
-const items = MainCarouselData.map((item)=> <img className="" role='presentation' src={item.image} alt='hello'/>)
+const items = MainCarouselData.map((item, idx)=> (
+  <img
+    key={idx}
+    className="h-[230px] w-full object-cover sm:h-[320px] md:h-[420px]"
+    role='presentation'
+    src={item.image}
+    alt='carousel'
+  />
+))
 
 
 return <AliceCarousel  mouseTracking items={items} disableButtonsControls controlsStrategy='alternate' autoPlay autoPlayInterval={1500} infinite/>;
