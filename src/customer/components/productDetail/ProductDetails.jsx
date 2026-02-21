@@ -70,12 +70,7 @@ export default function ProductDetails() {
       ? currentProduct.size
       : [];
   const sizeOptions = normalizeSizeOptions(rawSizes);
-
-  useEffect(() => {
-    if (!sizeOptions.includes(selectedSize)) {
-      setSelectedSize(sizeOptions[0]);
-    }
-  }, [sizeOptions, selectedSize]);
+  const activeSize = sizeOptions.includes(selectedSize) ? selectedSize : sizeOptions[0];
 
   if (loading) {
     return <div className="p-20 text-center text-gray-500">Loading product...</div>;
@@ -131,7 +126,7 @@ export default function ProductDetails() {
 
     const payload = {
       productId: numericProductId,
-      size: selectedSize,
+      size: activeSize,
       quantity: 1,
     };
 
@@ -182,7 +177,7 @@ export default function ProductDetails() {
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={`rounded-lg border px-6 py-2 text-sm font-medium transition ${
-                    selectedSize === size
+                    activeSize === size
                       ? "border-indigo-600 bg-indigo-50 text-indigo-700 shadow-sm"
                       : "border-gray-300 hover:border-indigo-400 hover:bg-gray-50"
                   }`}

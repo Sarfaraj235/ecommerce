@@ -63,6 +63,15 @@ const parsePageNumberFromUrl = (pageNumberParam) => {
   return parsed - 1
 }
 
+const normalizeCategorySlug = (slug = '') => {
+  const normalized = slug.replace(/-/g, '_').trim().toLowerCase()
+  const aliases = {
+    mens_krta: 'mens_kurta',
+    men_kurta: 'mens_kurta',
+  }
+  return aliases[normalized] || normalized
+}
+
 const normalizeProduct = (item, idx) => {
   const id = item?.id || item?._id || item?.productId || String(idx)
   const image =
@@ -99,15 +108,14 @@ export default function Product() {
   const [currentPage, setCurrentPage] = useState(() => parsePageNumberFromUrl(searchParams.get('pageNumber')))
   const [pageSize, setPageSize] = useState(() => Number(searchParams.get('pageSize')) || 12)
   const defaultColors = useMemo(() => {
-    const fromFilters = FilterData.find((section) => section.id === 'color')?.options?.map((o) => o.value) || []
-    // Backend requires `color` param; include common colors so "no selection" still behaves like "all products".
-    const commonColors = ['pink', 'red', 'orange', 'grey', 'gray', 'brown', 'maroon', 'navy', 'beige']
-    return Array.from(new Set([...fromFilters, ...commonColors]))
+    const fromFilter = FilterData.find((section) => section.id === 'color')?.options?.map((o) => o.value) || []
+    const common = ['pink', 'red', 'orange', 'grey', 'gray', 'brown', 'maroon', 'navy', 'beige', 'peacock']
+    return Array.from(new Set([...fromFilter, ...common]))
   }, [])
   const defaultSizes = useMemo(() => {
-    const fromFilters = FilterData.find((section) => section.id === 'size')?.options?.map((o) => o.value) || []
-    const commonSizes = ['xxs', 'xs', 'xxl', '3xl', '4xl', '5xl', 'free']
-    return Array.from(new Set([...fromFilters, ...commonSizes]))
+    const fromFilter = FilterData.find((section) => section.id === 'size')?.options?.map((o) => o.value) || []
+    const common = ['xxs', 'xs', 'xxl', '3xl', '4xl', '5xl', 'free']
+    return Array.from(new Set([...fromFilter, ...common]))
   }, [])
 
   const { minPrice, maxPrice } = useMemo(() => getPriceRange(filters.price || []), [filters.price])
@@ -129,13 +137,13 @@ export default function Product() {
       minPrice,
       maxPrice,
       minDiscount: selectedDiscounts.length ? Math.min(...selectedDiscounts) : 0,
-      category: (levelThree || '').replace(/-/g, '_').trim(),
+      category: normalizeCategorySlug(levelThree || ''),
       stock,
       sort: selectedSort,
       pageNumber: currentPage,
       pageSize,
     }
-  }, [filters, minPrice, maxPrice, levelThree, selectedSort, defaultColors, defaultSizes, currentPage, pageSize])
+  }, [filters, minPrice, maxPrice, levelThree, selectedSort, currentPage, pageSize, defaultColors, defaultSizes])
 
   useEffect(() => {
     dispatch(findProducts(requestData))

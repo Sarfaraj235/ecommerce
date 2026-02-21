@@ -34,6 +34,7 @@ export default function UseFilters() {
 
   // Sync state with URL when user navigates
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
     const color = params.get('color')?.split(',') || [];
     setFilters({ color });
   }, [location.search]);

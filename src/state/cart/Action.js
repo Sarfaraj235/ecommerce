@@ -21,7 +21,7 @@ export const getCart = () => async (dispatch) => {
         let response;
         try {
             response = await api.get("/api/cart/");
-        } catch (err) {
+        } catch {
             response = await api.get("/api/cart");
         }
         const { data } = response;

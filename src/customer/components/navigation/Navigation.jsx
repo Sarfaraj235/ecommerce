@@ -291,13 +291,13 @@ function Navigation() {
                   </div>
 
                   <button
-                    onClick={() => goTo("/profile", setOpen)}
+                    onClick={() => goTo("/account/profile", setOpen)}
                     className="block w-full text-left text-gray-600 hover:text-gray-900"
                   >
                     Profile
                   </button>
                   <button
-                    onClick={() => goTo("/orders", setOpen)}
+                    onClick={() => goTo("/account/order", setOpen)}
                     className="block w-full text-left text-gray-600 hover:text-gray-900"
                   >
                     My Orders

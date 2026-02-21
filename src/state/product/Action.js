@@ -29,25 +29,45 @@ export const findProducts = (reqData) => async (dispatch) => {
   } = reqData;
 
   try {
-    const params = new URLSearchParams();
+    const buildParams = (categoryValue) => {
+      const params = new URLSearchParams();
 
-    (colors ? colors.split(",").filter(Boolean) : []).forEach((c) =>
-      params.append("color", c)
-    );
-    (sizes ? sizes.split(",").filter(Boolean) : []).forEach((s) =>
-      params.append("size", s)
-    );
+      (colors ? colors.split(",").filter(Boolean) : []).forEach((c) =>
+        params.append("color", c)
+      );
+      (sizes ? sizes.split(",").filter(Boolean) : []).forEach((s) =>
+        params.append("size", s)
+      );
 
-    params.append("category", category ?? "");
-    params.append("minPrice", String(minPrice ?? 0));
-    params.append("maxPrice", String(maxPrice ?? 100000));
-    params.append("minDiscount", String(minDiscount ?? 0));
-    params.append("sort", sort ?? "");
-    params.append("stock", stock ?? "");
-    params.append("pageNumber", String(pageNumber ?? 0));
-    params.append("pageSize", String(pageSize ?? 12));
+      params.append("category", categoryValue ?? "");
+      params.append("minPrice", String(minPrice ?? 0));
+      params.append("maxPrice", String(maxPrice ?? 100000));
+      params.append("minDiscount", String(minDiscount ?? 0));
+      params.append("sort", sort ?? "");
+      params.append("stock", stock ?? "");
+      params.append("pageNumber", String(pageNumber ?? 0));
+      params.append("pageSize", String(pageSize ?? 12));
+      return params;
+    };
 
-    const { data } = await api.get(`/api/products?${params.toString()}`);
+    const { data } = await api.get(`/api/products?${buildParams(category).toString()}`);
+
+    const content = Array.isArray(data?.content)
+      ? data.content
+      : Array.isArray(data)
+        ? data
+        : [];
+
+    // Fallback for backends that store category names with spaces instead of underscores.
+    if (content.length === 0 && typeof category === "string" && category.includes("_")) {
+      const categoryWithSpaces = category.replace(/_/g, " ");
+      const retry = await api.get(`/api/products?${buildParams(categoryWithSpaces).toString()}`);
+      dispatch({
+        type: FIND_PRODUCTS_SUCCESS,
+        payload: retry.data,
+      });
+      return;
+    }
 
     console.log("product data: ", data);
     

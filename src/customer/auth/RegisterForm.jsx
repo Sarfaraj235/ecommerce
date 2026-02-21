@@ -21,7 +21,10 @@ export default function RegisterForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { jwt, isLoading, error } = useSelector((state) => state.auth);
+  const { jwt, user, isLoading, error } = useSelector((state) => state.auth);
+
+  const getRole = (sourceUser) =>
+    String(sourceUser?.role || sourceUser?.authorities?.[0]?.authority || "").toUpperCase();
 
   useEffect(() => {
     dispatch(clearAuthError());
@@ -30,9 +33,15 @@ export default function RegisterForm() {
   useEffect(() => {
     if (jwt) {
       dispatch(getUser());
-      navigate("/");
     }
-  }, [jwt, dispatch, navigate]);
+  }, [jwt, dispatch]);
+
+  useEffect(() => {
+    if (!jwt || !user) return;
+    const role = getRole(user);
+    if (role === "ADMIN" || role === "ROLE_ADMIN") navigate("/admin", { replace: true });
+    else navigate("/", { replace: true });
+  }, [jwt, user, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

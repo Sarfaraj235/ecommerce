@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://ecommerce-server-production-c195.up.railway.app"
+export const API_BASE_URL = "http://localhost:8080"
 
 export const isValidJwt = (token) =>
     typeof token === "string" &&
