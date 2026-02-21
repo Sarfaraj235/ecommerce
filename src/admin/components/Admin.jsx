@@ -147,13 +147,13 @@ const Admin = () => {
         anchor="left"
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        sx={{ display: { xs: "block", md: "none" }, "& .MuiDrawer-paper": { width: 280 } }}
+        sx={{ display: { xs: "block", lg: "none" }, "& .MuiDrawer-paper": { width: 280 } }}
       >
         {drawerContent}
       </Drawer>
 
       <div className="mx-auto flex w-full max-w-[1600px]">
-        <aside className="hidden h-screen w-[280px] shrink-0 border-r border-gray-300 bg-white md:block">
+        <aside className="hidden h-screen w-[280px] shrink-0 border-r border-gray-300 bg-white lg:block">
           {drawerContent}
         </aside>
 
