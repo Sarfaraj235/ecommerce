@@ -2,11 +2,11 @@ import React from "react";
  const HomeSectionCard = ({product} )=>  {
   return (
 
-    <div className="w-full max-w-[320px] bg-white border rounded-xl shadow-md hover:shadow-xl transition p-3 sm:p-4 cursor-pointer">
+    <div className="w-full max-w-[300px] bg-white border rounded-xl shadow-md hover:shadow-xl transition p-3 sm:p-4 cursor-pointer">
       <img 
         src={product.image}
         alt={product.title || "product"}
-        className="h-72 sm:h-80 w-full object-cover rounded-lg"
+        className="h-56 sm:h-72 w-full object-cover rounded-lg"
       />
 
       <div className="mt-3 space-y-2">
