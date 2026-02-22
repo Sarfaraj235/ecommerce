@@ -30,5 +30,27 @@ export const adminApi = {
     const { data } = await api.delete(`/api/admin/orders/${orderId}/delete`);
     return data;
   },
-};
 
+  getCustomers: async () => {
+    const { data } = await api.get("/api/admin/users");
+    return Array.isArray(data)
+      ? data
+      : Array.isArray(data?.content)
+        ? data.content
+        : Array.isArray(data?.users)
+          ? data.users
+          : [];
+  },
+
+  updateCustomerRole: async (userId, role) => {
+    const { data } = await api.put(`/api/admin/users/${userId}/role`, null, {
+      params: { role },
+    });
+    return data;
+  },
+
+  deleteCustomer: async (userId) => {
+    const { data } = await api.delete(`/api/admin/users/${userId}`);
+    return data;
+  },
+};
