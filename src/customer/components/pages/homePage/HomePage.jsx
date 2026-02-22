@@ -11,7 +11,7 @@ const HomePage = () => {
       <div>
         <MainCarousel />
       </div>
-     <div className="space-y-8 sm:space-y-10 flex flex-col justify-center px-3 sm:px-5 lg:px-10 py-4 sm:py-6">
+     <div className="space-y-10  flex flex-col justify-center px-5 lg:px-10">
        <HomeSectionCarousel data = { MensKurta} sectionName={"Men's Kurta"} />
        <HomeSectionCarousel data = { MensKurta} sectionName={"Men's Shoes"} />
        <HomeSectionCarousel data = { MensKurta} sectionName={"Men's Shirt"} />

@@ -3,14 +3,11 @@ import {
   Avatar,
   Box,
   CssBaseline,
-  Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -21,7 +18,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
 import AdminDashboard from "./AdminDashboard";
 import CreateProductForm from "./CreateProductForm";
 import ProductsTable from "./ProductsTable";
@@ -41,7 +37,6 @@ const Admin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const fullName =
     user?.firstName && user?.lastName
@@ -58,12 +53,7 @@ const Admin = () => {
     navigate("/login", { replace: true });
   };
 
-  const handleNavigate = (path) => {
-    navigate(path);
-    setMobileOpen(false);
-  };
-
-  const drawerContent = (
+  const drawer = (
     <Box
       sx={{
         overflow: "auto",
@@ -75,7 +65,7 @@ const Admin = () => {
     >
       <List>
         {menu.map((item) => (
-          <ListItem key={item.name} disablePadding onClick={() => handleNavigate(item.path)}>
+          <ListItem key={item.name} disablePadding onClick={() => navigate(item.path)}>
             <ListItemButton>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText>{item.name}</ListItemText>
@@ -85,7 +75,7 @@ const Admin = () => {
       </List>
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => handleNavigate("/account/profile")}>
+          <ListItemButton onClick={() => navigate("/account/profile")}>
             <ListItemIcon>
               <Avatar sx={{ width: 30, height: 30, bgcolor: "#1d4ed8", fontSize: 14 }}>
                 {avatarLetter}
@@ -124,51 +114,24 @@ const Admin = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex h-[100vh]">
       <CssBaseline />
+      <div className="w-[15%] border border-r-gray-300 h-full fixed top-0">
+        {drawer}
+      </div>
 
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-white px-3 py-2 md:hidden">
-        <div className="flex items-center gap-2">
-          <IconButton onClick={() => setMobileOpen(true)} size="small" aria-label="open admin menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            Admin Panel
-          </Typography>
-        </div>
-        <Tooltip title={fullName}>
-          <Avatar sx={{ width: 30, height: 30, bgcolor: "#1d4ed8", fontSize: 14 }}>
-            {avatarLetter}
-          </Avatar>
-        </Tooltip>
-      </header>
-
-      <Drawer
-        anchor="left"
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        sx={{ display: { xs: "block", lg: "none" }, "& .MuiDrawer-paper": { width: 280 } }}
-      >
-        {drawerContent}
-      </Drawer>
-
-      <div className="mx-auto flex w-full max-w-[1600px]">
-        <aside className="hidden h-screen w-[280px] shrink-0 border-r border-gray-300 bg-white lg:block">
-          {drawerContent}
-        </aside>
-
-        <main className="min-w-0 flex-1">
-          <Routes>
-            <Route index element={<AdminDashboard />} />
-            <Route path="product/create" element={<CreateProductForm />} />
-            <Route path="products" element={<ProductsTable />} />
-            <Route path="orders" element={<OrdersTable />} />
-            <Route path="customers" element={<CustomersTable />} />
-          </Routes>
-        </main>
+      <div className="w-[85%] ml-[15%]">
+        <Routes>
+          <Route index element={<AdminDashboard />} />
+          <Route path="product/create" element={<CreateProductForm />} />
+          <Route path="products" element={<ProductsTable />} />
+          <Route path="orders" element={<OrdersTable />} />
+          <Route path="customers" element={<CustomersTable />} />
+        </Routes>
       </div>
     </div>
   );
 };
 
 export default Admin;
+

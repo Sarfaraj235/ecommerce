@@ -13,10 +13,10 @@ const Customers = () => {
     ];
 
     return (
-        <div className='p-4 sm:p-5 md:p-6'>
+        <div className='p-5'>
             <Card className='mt-2'>
                 <CardHeader title="All Customers" />
-                <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
+                <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="customer table">
                         <TableHead>
                             <TableRow>

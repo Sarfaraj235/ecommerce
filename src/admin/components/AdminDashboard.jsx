@@ -17,8 +17,8 @@ const data = [
 
 const AdminDashboard = () => {
     return (
-        <div className='p-4 sm:p-6 md:p-8 lg:p-10'>
-            <Typography variant='h4' sx={{ pb: { xs: 3, md: 5 }, fontSize: { xs: "1.8rem", md: "2.125rem" } }}>Dashboard Overview</Typography>
+        <div className='p-10'>
+            <Typography variant='h4' sx={{ pb: 5 }}>Dashboard Overview</Typography>
             
             {/* Statistical Cards */}
             <Grid container spacing={3}>

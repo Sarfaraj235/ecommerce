@@ -103,8 +103,8 @@ const CreateProductForm = () => {
     };
 
     return (
-        <div className='p-4 sm:p-6 md:p-8 lg:p-10'>
-            <Typography variant='h4' sx={{ textAlign: "center", pb: { xs: 3, md: 6 }, fontSize: { xs: "1.9rem", md: "2.125rem" } }} className='text-gray-700'>Add New Product</Typography>
+        <div className='p-10'>
+            <Typography variant='h4' sx={{ textAlign: "center" }} className='py-10 text-gray-700'>Add New Product</Typography>
             {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
             <form onSubmit={handleSubmit}>

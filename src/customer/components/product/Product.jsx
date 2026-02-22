@@ -333,7 +333,7 @@ export default function Product() {
               {loading && <p className="mb-4 text-sm text-gray-500">Loading products...</p>}
               {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
 
-              <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-5 md:gap-6 sm:grid-cols-3 md:grid-cols-4">
+              <div className="grid grid-cols-2 items-stretch gap-6 sm:grid-cols-3 md:grid-cols-4">
                 {!loading && normalizedProducts.length > 0 ? (
                   normalizedProducts.map((item) => <ProductCard key={item.id} product={item} />)
                 ) : !loading ? (
