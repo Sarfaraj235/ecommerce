@@ -32,7 +32,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
     return (
         <div className="relative">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                <h2 className="text-2xl sm:text-xl font-semibold text-gray-900">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
                     {sectionName}
                 </h2>
                 <span className="flex-1 h-[1px] bg-gray-200"></span>

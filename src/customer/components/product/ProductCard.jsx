@@ -21,7 +21,7 @@ const ProductCard = ({ product }) => {
         <img
           src={image}
           alt={title}
-          className="h-full w-full object-contain p-3 transition hover:scale-105"
+          className="h-full w-full object-contain p-2 sm:p-3 transition hover:scale-105"
         />
 
         {discount > 0 && (
@@ -31,8 +31,8 @@ const ProductCard = ({ product }) => {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-3">
-        <h3 className="line-clamp-2 min-h-[2.75rem] text-sm font-semibold text-gray-900">{title}</h3>
+      <div className="flex flex-1 flex-col p-2.5 sm:p-3">
+        <h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-semibold text-gray-900">{title}</h3>
         <p className="mt-1 text-xs text-gray-500">{brand}</p>
 
         <div className="mt-2 flex items-center gap-2">
@@ -42,7 +42,7 @@ const ProductCard = ({ product }) => {
 
         <button
           onClick={handleAddToCart}
-          className="mt-auto w-full rounded bg-black py-1.5 text-sm text-white transition hover:bg-gray-800"
+          className="mt-auto w-full rounded bg-black py-1.5 text-xs sm:text-sm text-white transition hover:bg-gray-800"
         >
           Add to Cart
         </button>

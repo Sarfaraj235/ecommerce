@@ -11,7 +11,7 @@ import React from "react";
 
       <div className="mt-3 space-y-2">
     
-        <p className="text-sm sm:text-base text-gray-900 leading-snug">{product.title}</p>
+        <p className="line-clamp-3 text-sm sm:text-base text-gray-900 leading-snug">{product.title}</p>
 
       </div>
     </div>

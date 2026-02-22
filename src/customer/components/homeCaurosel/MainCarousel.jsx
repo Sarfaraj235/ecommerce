@@ -8,7 +8,7 @@ function MainCarousel(){
 const items = MainCarouselData.map((item, idx)=> (
   <img
     key={idx}
-    className="h-[180px] w-full object-cover object-center sm:h-[260px] md:h-[420px]"
+    className="h-[150px] w-full object-cover object-left sm:object-center sm:h-[240px] md:h-[420px]"
     role='presentation'
     src={item.image}
     alt='carousel'
