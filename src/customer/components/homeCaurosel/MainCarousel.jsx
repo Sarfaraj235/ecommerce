@@ -15,9 +15,7 @@ const items = MainCarouselData.map((item, idx)=> (
   />
 ))
 
-
 return <AliceCarousel  mouseTracking items={items} disableButtonsControls controlsStrategy='alternate' autoPlay autoPlayInterval={1500} infinite/>;
-
 
 }
 export default MainCarousel

@@ -7,9 +7,10 @@ import HomeSectionCard from "../homeSectionCard/HomeSectionCard";
 const HomeSectionCarousel = ({ data, sectionName }) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
-    console.log(data)
-    const items = data.map((item) => (
-        <div className="flex justify-center">
+    const safeData = Array.isArray(data) ? data : [];
+
+    const items = safeData.map((item, idx) => (
+        <div key={item?.id || `${sectionName}-${idx}`} className="flex justify-center">
             <HomeSectionCard product={item} />
         </div>
     ));
@@ -25,7 +26,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
 
     return (
         <div className="relative">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-2">
                 <h2 className="text-xl font-semibold text-gray-900">
                     {sectionName}
                 </h2>

@@ -138,6 +138,23 @@ function Navigation() {
     if (close) close();
   };
 
+  const handleFeaturedClick = (category, item, close) => {
+    const isNewArrivals =
+      String(item?.name || "")
+        .trim()
+        .toLowerCase() === "new arrivals";
+
+    if (isNewArrivals) {
+      navigate(
+        `/search?feed=new_arrivals&segment=${category.id}&sort=newest&pageNumber=1&pageSize=12`
+      );
+    } else {
+      navigate(`/${category.id}`);
+    }
+
+    if (close) close();
+  };
+
   
   return (
     <div className="bg-white">
@@ -194,13 +211,23 @@ function Navigation() {
                     <div className="grid grid-cols-2 gap-x-4">
                       {category.featured.map((item, i) => (
                         <div key={i} className="group relative text-sm">
-                          <img
-                            alt={item.imageAlt}
-                            src={item.imageSrc}
-                            className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
-                          />
                           <button
-                            onClick={() => goTo(`/${category.id}`, setOpen)}
+                            type="button"
+                            onClick={() =>
+                              handleFeaturedClick(category, item, setOpen)
+                            }
+                            className="block w-full text-left"
+                          >
+                            <img
+                              alt={item.imageAlt}
+                              src={item.imageSrc}
+                              className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
+                            />
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleFeaturedClick(category, item, setOpen)
+                            }
                             className="mt-6 block w-full text-left font-medium text-gray-900"
                           >
                             {item.name}
@@ -349,10 +376,10 @@ function Navigation() {
 
               {/* ---------- Logo ---------- */}
               <div className="ml-4 flex lg:ml-0">
-                <button onClick={() => navigate("/")}>
+                <button onClick={() => navigate("/")} className="flex items-center">
                   <img
                     alt="Logo"
-                    src="https://t3.ftcdn.net/jpg/16/63/69/14/240_F_1663691440_c1nKHInif12j2LrgdIufPHG0hBoB3SyB.jpg"
+                    src="/ss-fashion-logo.svg"
                     className="h-10 w-auto"
                   />
                 </button>
@@ -390,15 +417,30 @@ function Navigation() {
                                         key={i}
                                         className="group relative text-base sm:text-sm"
                                       >
-                                        <img
-                                          alt={item.imageAlt}
-                                          src={item.imageSrc}
-                                          className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
-                                        />
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            handleFeaturedClick(
+                                              category,
+                                              item,
+                                              close
+                                            )
+                                          }
+                                          className="block w-full text-left"
+                                        >
+                                          <img
+                                            alt={item.imageAlt}
+                                            src={item.imageSrc}
+                                            className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
+                                          />
+                                        </button>
                                         <button
                                           onClick={() => {
-                                            goTo(`/${category.id}`);
-                                            close();
+                                            handleFeaturedClick(
+                                              category,
+                                              item,
+                                              close
+                                            );
                                           }}
                                           className="mt-6 block text-left font-medium text-gray-900"
                                         >

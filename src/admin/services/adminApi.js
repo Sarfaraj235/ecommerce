@@ -53,4 +53,9 @@ export const adminApi = {
     const { data } = await api.delete(`/api/admin/users/${userId}`);
     return data;
   },
+
+  getDashboardOverview: async () => {
+    const { data } = await api.get("/api/admin/dashboard/overview");
+    return data || {};
+  },
 };

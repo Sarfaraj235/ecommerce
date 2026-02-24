@@ -1,0 +1,20 @@
+<svg width="320" height="96" viewBox="0 0 320 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="p1" x1="8" y1="8" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="p2" x1="22" y1="22" x2="74" y2="74" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F97316"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="80" height="80" rx="24" fill="url(#p1)"/>
+  <circle cx="48" cy="48" r="20" fill="url(#p2)" opacity="0.18"/>
+  <path d="M31 38C31 29.163 38.163 22 47 22H49C57.837 22 65 29.163 65 38" stroke="#F8FAFC" stroke-width="5" stroke-linecap="round"/>
+  <rect x="29" y="38" width="38" height="32" rx="11" fill="url(#p2)"/>
+  <path d="M39 53H57" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="104" y="52" fill="#0F172A" font-size="34" font-family="Trebuchet MS, Verdana, sans-serif" font-weight="800">Ecomora</text>
+  <text x="106" y="74" fill="#64748B" font-size="13" font-family="Trebuchet MS, Verdana, sans-serif" font-weight="700" letter-spacing="3">MARKET</text>
+</svg>
+

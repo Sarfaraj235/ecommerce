@@ -4,6 +4,7 @@ import { Rating } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { findProductsById } from "../../../state/product/Action";
 import { addItemToCart, getCart } from "../../../state/cart/Action";
+import { api } from "../../../state/config/ApiConfig";
 import HomeSectionCard from "../homeSectionCard/HomeSectionCard";
 import { calculateDiscount } from "../product/discountUtils";
 
@@ -43,11 +44,31 @@ const normalizeSizeOptions = (sizes) => {
     .filter(Boolean);
 };
 
+const parseProductList = (responseData) =>
+  (Array.isArray(responseData) && responseData) ||
+  (Array.isArray(responseData?.content) && responseData.content) ||
+  (Array.isArray(responseData?.products) && responseData.products) ||
+  (Array.isArray(responseData?.data) && responseData.data) ||
+  [];
+
+const buildSimilarParams = (category) => {
+  const params = new URLSearchParams();
+  params.append("category", category);
+  params.append("minPrice", "0");
+  params.append("maxPrice", "100000");
+  params.append("minDiscount", "0");
+  params.append("sort", "newest");
+  params.append("stock", "");
+  params.append("pageNumber", "0");
+  params.append("pageSize", "24");
+  return params;
+};
+
 export default function ProductDetails() {
   const { productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { product, products, loading, error } = useSelector((state) => state.product);
+  const { product, loading, error } = useSelector((state) => state.product);
   const { loading: cartLoading } = useSelector((state) => state.cart);
   const { jwt } = useSelector((state) => state.auth);
 
@@ -64,6 +85,7 @@ export default function ProductDetails() {
 
   const [selectedSize, setSelectedSize] = useState("M");
   const [addToCartError, setAddToCartError] = useState("");
+  const [similarProducts, setSimilarProducts] = useState([]);
   const rawSizes = Array.isArray(currentProduct?.sizes)
     ? currentProduct.sizes
     : Array.isArray(currentProduct?.size)
@@ -71,6 +93,57 @@ export default function ProductDetails() {
       : [];
   const sizeOptions = normalizeSizeOptions(rawSizes);
   const activeSize = sizeOptions.includes(selectedSize) ? selectedSize : sizeOptions[0];
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadSimilarProducts = async () => {
+      if (!currentProduct) {
+        if (!cancelled) setSimilarProducts([]);
+        return;
+      }
+
+      const categoryName =
+        currentProduct?.category?.name ||
+        currentProduct?.categoryName ||
+        currentProduct?.thirdLevelCategory ||
+        "";
+
+      if (!categoryName) {
+        if (!cancelled) setSimilarProducts([]);
+        return;
+      }
+
+      const raw = String(categoryName).trim().toLowerCase();
+      const candidates = Array.from(
+        new Set([raw, raw.replace(/_/g, " "), raw.replace(/\s+/g, "_")])
+      );
+
+      for (const candidate of candidates) {
+        try {
+          const { data } = await api.get(`/api/products?${buildSimilarParams(candidate).toString()}`);
+          const items = parseProductList(data)
+            .map(normalizeProduct)
+            .filter((item) => item && String(item.id) !== String(currentProduct.id))
+            .slice(0, 4);
+
+          if (items.length > 0) {
+            if (!cancelled) setSimilarProducts(items);
+            return;
+          }
+        } catch {
+          // Try the next category alias variant.
+        }
+      }
+
+      if (!cancelled) setSimilarProducts([]);
+    };
+
+    loadSimilarProducts();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentProduct]);
 
   if (loading) {
     return <div className="p-20 text-center text-gray-500">Loading product...</div>;
@@ -102,14 +175,6 @@ export default function ProductDetails() {
 
   const { image, title, brand, price, oldPrice } = currentProduct;
   const discount = calculateDiscount(oldPrice, price);
-  const relatedProducts =
-    (Array.isArray(products?.content) ? products.content : Array.isArray(products) ? products : [])
-      .map(normalizeProduct)
-      .filter(
-        (item) =>
-          item && String(item.id) !== String(currentProduct.id)
-      )
-      .slice(0, 4);
 
   const handleAddToCart = async () => {
     if (!jwt) {
@@ -201,12 +266,16 @@ export default function ProductDetails() {
 
       <hr className="my-16" />
 
-      {relatedProducts.length > 0 && (
+      {similarProducts.length > 0 && (
         <section className="mt-16">
           <h1 className="mb-6 text-xl font-bold">Similar Products</h1>
           <div className="flex flex-wrap gap-5">
-            {relatedProducts.map((item) => (
-              <HomeSectionCard key={item.id} product={item} />
+            {similarProducts.map((item) => (
+              <HomeSectionCard
+                key={item.id}
+                product={item}
+                onClick={() => navigate(`/product/${item.id}`)}
+              />
             ))}
           </div>
         </section>

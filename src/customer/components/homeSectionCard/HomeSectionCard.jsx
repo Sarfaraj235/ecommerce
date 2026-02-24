@@ -1,17 +1,18 @@
 import React from "react";
- const HomeSectionCard = ({product} )=>  {
+ const HomeSectionCard = ({product, onClick} )=>  {
   return (
 
-    <div className="w-64 bg-white border rounded-xl shadow-md hover:shadow-xl transition p-4 cursor-pointer">
+    <div onClick={onClick} className="w-64 h-[300px] bg-white border rounded-xl shadow-md hover:shadow-xl transition p-3 cursor-pointer flex flex-col">
       <img 
         src={product.image}
         alt={product.title || "product"}
-        className="h-45 w-full object-top rounded-lg"
+        className="h-52 w-full object-cover object-top rounded-lg"
       />
 
-      <div className="mt-3 space-y-2">
-    
-        <p className="text-sm text-black-100">{product.title}</p>
+      <div className="mt-2 h-10">
+        <p className="text-[13px] text-gray-800 leading-5 overflow-hidden text-ellipsis [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]">
+          {product.title}
+        </p>
 
       </div>
     </div>

@@ -1,0 +1,20 @@
+<svg width="320" height="96" viewBox="0 0 320 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="m1" x1="10" y1="8" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1220"/>
+      <stop offset="1" stop-color="#0F3D8C"/>
+    </linearGradient>
+    <linearGradient id="m2" x1="24" y1="20" x2="72" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="80" height="80" rx="22" fill="url(#m1)"/>
+  <circle cx="48" cy="48" r="24" fill="url(#m2)" opacity="0.16"/>
+  <path d="M31 38C31 29.163 38.163 22 47 22H49C57.837 22 65 29.163 65 38" stroke="#E5E7EB" stroke-width="5" stroke-linecap="round"/>
+  <rect x="29" y="38" width="38" height="30" rx="10" fill="#E5E7EB"/>
+  <path d="M38 52H58" stroke="#0B1220" stroke-width="4" stroke-linecap="round"/>
+  <text x="104" y="52" fill="#0F172A" font-size="34" font-family="Verdana, Geneva, sans-serif" font-weight="700" letter-spacing="1">Ecomora</text>
+  <text x="106" y="74" fill="#334155" font-size="13" font-family="Verdana, Geneva, sans-serif" font-weight="700" letter-spacing="3">STORE</text>
+</svg>
+

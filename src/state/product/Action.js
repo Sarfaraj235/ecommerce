@@ -29,6 +29,13 @@ export const findProducts = (reqData) => async (dispatch) => {
   } = reqData;
 
   try {
+    const parseProductList = (responseData) =>
+      (Array.isArray(responseData?.content) && responseData.content) ||
+      (Array.isArray(responseData?.products) && responseData.products) ||
+      (Array.isArray(responseData?.data) && responseData.data) ||
+      (Array.isArray(responseData) && responseData) ||
+      [];
+
     const buildParams = (categoryValue) => {
       const params = new URLSearchParams();
 
@@ -39,7 +46,11 @@ export const findProducts = (reqData) => async (dispatch) => {
         params.append("size", s)
       );
 
-      params.append("category", categoryValue ?? "");
+      const normalizedCategory =
+        typeof categoryValue === "string" ? categoryValue.trim() : categoryValue;
+      if (normalizedCategory) {
+        params.append("category", normalizedCategory);
+      }
       params.append("minPrice", String(minPrice ?? 0));
       params.append("maxPrice", String(maxPrice ?? 100000));
       params.append("minDiscount", String(minDiscount ?? 0));
@@ -50,16 +61,65 @@ export const findProducts = (reqData) => async (dispatch) => {
       return params;
     };
 
+    const categoryAliasMap = {
+      womens_top: ["women_top", "womens_tops", "women_tops", "womens tops", "women tops", "top", "tops"],
+      women_top: ["womens_top", "womens_tops", "women_tops", "womens tops", "women tops", "top", "tops"],
+      womens_tops: ["women_tops", "womens_top", "women_top", "womens tops", "women tops", "top", "tops"],
+      women_tops: ["womens_tops", "womens_top", "women_top", "womens tops", "women tops", "top", "tops"],
+      womens_dress: ["women_dress", "womens_dresses", "women_dresses", "womens dresses", "women dresses", "dress", "dresses"],
+      women_dress: ["womens_dress", "womens_dresses", "women_dresses", "womens dresses", "women dresses", "dress", "dresses"],
+      womens_dresses: ["women_dresses", "womens_dress", "women_dress", "womens dresses", "women dresses", "dress", "dresses"],
+      women_dresses: ["womens_dresses", "womens_dress", "women_dress", "womens dresses", "women dresses", "dress", "dresses"],
+      womens_pant: ["women_pant", "womens_pants", "women_pants", "womens pants", "women pants", "pant", "pants", "trouser", "trousers"],
+      women_pant: ["womens_pant", "womens_pants", "women_pants", "womens pants", "women pants", "pant", "pants", "trouser", "trousers"],
+      womens_pants: ["women_pants", "womens_pant", "women_pant", "womens pants", "women pants", "pant", "pants", "trouser", "trousers"],
+      women_pants: ["womens_pants", "womens_pant", "women_pant", "womens pants", "women pants", "pant", "pants", "trouser", "trousers"],
+      mens_watch: ["men_watch", "mens_watches", "men_watches", "mens watch", "men watch", "watches", "watch"],
+      men_watch: ["mens_watch", "mens_watches", "men_watches", "mens watch", "men watch", "watches", "watch"],
+      mens_watches: ["men_watches", "mens_watch", "men_watch", "mens watches", "men watches", "watch", "watches"],
+      men_watches: ["mens_watches", "mens_watch", "men_watch", "mens watches", "men watches", "watch", "watches"],
+      mens_jackets: ["mens_jacket", "men_jackets", "men_jacket", "mens jacket", "men jacket", "jacket", "jackets"],
+      mens_kurta: ["men_kurta", "mens kurta", "men kurta"],
+    };
+
+    if (typeof category === "string") {
+      const categoryKey = category.trim().toLowerCase();
+      const feedSegmentMap = {
+        men_all: "men",
+        women_all: "women",
+        all: "all",
+      };
+      const mappedSegment = feedSegmentMap[categoryKey];
+
+      if (mappedSegment) {
+        const arrivalsParams = new URLSearchParams();
+        arrivalsParams.append("segment", mappedSegment);
+        arrivalsParams.append("pageNumber", String(pageNumber ?? 0));
+        arrivalsParams.append("pageSize", String(pageSize ?? 12));
+        if (sort) arrivalsParams.append("sort", sort);
+
+        const { data } = await api.get(
+          `/api/products/new-arrivals?${arrivalsParams.toString()}`
+        );
+        dispatch({
+          type: FIND_PRODUCTS_SUCCESS,
+          payload: data,
+        });
+        return;
+      }
+    }
+
     const { data } = await api.get(`/api/products?${buildParams(category).toString()}`);
 
-    const content = Array.isArray(data?.content)
-      ? data.content
-      : Array.isArray(data)
-        ? data
-        : [];
+    const content = parseProductList(data);
 
     // Fallback for backends that store category names with spaces instead of underscores.
-    if (content.length === 0 && typeof category === "string" && category.includes("_")) {
+    if (
+      content.length === 0 &&
+      typeof category === "string" &&
+      category.trim() &&
+      category.includes("_")
+    ) {
       const categoryWithSpaces = category.replace(/_/g, " ");
       const retry = await api.get(`/api/products?${buildParams(categoryWithSpaces).toString()}`);
       dispatch({
@@ -67,6 +127,27 @@ export const findProducts = (reqData) => async (dispatch) => {
         payload: retry.data,
       });
       return;
+    }
+
+    // Retry common category aliases when the primary category returns no products.
+    if (content.length === 0 && typeof category === "string" && category.trim()) {
+      const key = category.trim().toLowerCase();
+      const aliases = categoryAliasMap[key] || [];
+      for (const alias of aliases) {
+        try {
+          const retry = await api.get(`/api/products?${buildParams(alias).toString()}`);
+          const retryContent = parseProductList(retry.data);
+          if (retryContent.length > 0) {
+            dispatch({
+              type: FIND_PRODUCTS_SUCCESS,
+              payload: retry.data,
+            });
+            return;
+          }
+        } catch {
+          // Continue trying other aliases.
+        }
+      }
     }
 
     console.log("product data: ", data);

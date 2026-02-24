@@ -100,6 +100,10 @@ export default function Product() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { levelThree } = useParams()
   const dispatch = useDispatch()
+  const feed = searchParams.get('feed') || ''
+  const segment = searchParams.get('segment') || ''
+  const isNewArrivalsFeed = feed === 'new_arrivals'
+  const hasCategoryRoute = Boolean(levelThree && String(levelThree).trim())
 
   const { products, loading, error } = useSelector((state) => state.product)
 
@@ -107,22 +111,16 @@ export default function Product() {
   const [selectedSort, setSelectedSort] = useState(() => searchParams.get('sort') || '')
   const [currentPage, setCurrentPage] = useState(() => parsePageNumberFromUrl(searchParams.get('pageNumber')))
   const [pageSize, setPageSize] = useState(() => Number(searchParams.get('pageSize')) || 12)
-  const defaultColors = useMemo(() => {
-    const fromFilter = FilterData.find((section) => section.id === 'color')?.options?.map((o) => o.value) || []
-    const common = ['pink', 'red', 'orange', 'grey', 'gray', 'brown', 'maroon', 'navy', 'beige', 'peacock']
-    return Array.from(new Set([...fromFilter, ...common]))
-  }, [])
-  const defaultSizes = useMemo(() => {
-    const fromFilter = FilterData.find((section) => section.id === 'size')?.options?.map((o) => o.value) || []
-    const common = ['xxs', 'xs', 'xxl', '3xl', '4xl', '5xl', 'free']
-    return Array.from(new Set([...fromFilter, ...common]))
-  }, [])
 
   const { minPrice, maxPrice } = useMemo(() => getPriceRange(filters.price || []), [filters.price])
 
   const requestData = useMemo(() => {
     const selectedDiscounts = (filters.discount || []).map(Number).filter((v) => !Number.isNaN(v))
     const availability = filters.availability || []
+    const selectedColors = filters.color && filters.color.length ? filters.color : []
+    const selectedSizes = filters.size && filters.size.length ? filters.size : []
+    const effectiveColors = selectedColors
+    const effectiveSizes = selectedSizes
 
     let stock = ''
     if (availability.length === 1) {
@@ -130,20 +128,37 @@ export default function Product() {
     }
 
     return {
-      colors: ((filters.color && filters.color.length ? filters.color : defaultColors) || []).join(','),
-      sizes: ((filters.size && filters.size.length ? filters.size : defaultSizes) || [])
+      colors: effectiveColors.join(','),
+      sizes: effectiveSizes
         .map((size) => String(size).toUpperCase())
         .join(','),
       minPrice,
       maxPrice,
       minDiscount: selectedDiscounts.length ? Math.min(...selectedDiscounts) : 0,
-      category: normalizeCategorySlug(levelThree || ''),
+      category: hasCategoryRoute
+        ? normalizeCategorySlug(levelThree || '')
+        : segment === 'women'
+          ? 'women_all'
+          : segment === 'men'
+            ? 'men_all'
+            : 'all',
       stock,
-      sort: selectedSort,
+      sort: selectedSort || (isNewArrivalsFeed ? 'newest' : ''),
       pageNumber: currentPage,
       pageSize,
     }
-  }, [filters, minPrice, maxPrice, levelThree, selectedSort, currentPage, pageSize, defaultColors, defaultSizes])
+  }, [
+    filters,
+    minPrice,
+    maxPrice,
+    levelThree,
+    segment,
+    selectedSort,
+    currentPage,
+    pageSize,
+    hasCategoryRoute,
+    isNewArrivalsFeed,
+  ])
 
   useEffect(() => {
     dispatch(findProducts(requestData))
@@ -154,11 +169,13 @@ export default function Product() {
     Object.keys(filters).forEach((sectionId) => {
       filters[sectionId].forEach((val) => params.append(sectionId, val))
     })
+    if (isNewArrivalsFeed) params.set('feed', 'new_arrivals')
+    if (segment) params.set('segment', segment)
     if (selectedSort) params.set('sort', selectedSort)
     params.set('pageNumber', String(currentPage + 1))
     params.set('pageSize', String(pageSize))
     setSearchParams(params)
-  }, [filters, selectedSort, currentPage, pageSize, setSearchParams])
+  }, [filters, selectedSort, currentPage, pageSize, setSearchParams, isNewArrivalsFeed, segment])
 
   const normalizedProducts = useMemo(() => {
     const list =
@@ -333,7 +350,7 @@ export default function Product() {
               {loading && <p className="mb-4 text-sm text-gray-500">Loading products...</p>}
               {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
 
-              <div className="grid grid-cols-2 items-stretch gap-6 sm:grid-cols-3 md:grid-cols-4">
+              <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {!loading && normalizedProducts.length > 0 ? (
                   normalizedProducts.map((item) => <ProductCard key={item.id} product={item} />)
                 ) : !loading ? (

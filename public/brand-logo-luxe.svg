@@ -1,0 +1,20 @@
+<svg width="320" height="96" viewBox="0 0 320 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="l1" x1="8" y1="8" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#1F2937"/>
+    </linearGradient>
+    <linearGradient id="l2" x1="22" y1="24" x2="74" y2="70" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#D4AF37"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="80" height="80" rx="20" fill="url(#l1)"/>
+  <path d="M30 37C30 28.163 37.163 21 46 21H50C58.837 21 66 28.163 66 37" stroke="url(#l2)" stroke-width="4.5" stroke-linecap="round"/>
+  <rect x="28" y="37" width="40" height="34" rx="10" stroke="url(#l2)" stroke-width="3"/>
+  <path d="M39 50H57" stroke="url(#l2)" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M39 58H52" stroke="url(#l2)" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="104" y="52" fill="#111827" font-size="34" font-family="Georgia, 'Times New Roman', serif" font-weight="700" letter-spacing="1">Ecomora</text>
+  <text x="106" y="74" fill="#6B7280" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="700" letter-spacing="4">ATELIER</text>
+</svg>
+
