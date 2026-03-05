@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainCarousel from "../../homeCaurosel/MainCarousel.jsx";
 import HomeSectionCarousel from "../../homeSectionCarousel/HomeSectionCarousel.jsx";
-import { api } from "../../../../state/config/ApiConfig";
+import { fetchProductsList } from "../../../../state/product/productApi";
 
 const ITEMS_PER_SECTION = 12;
 const PRODUCT_PLACEHOLDER = "https://via.placeholder.com/320x420?text=Product";
@@ -133,7 +133,7 @@ const HomePage = () => {
     const fetchSectionProducts = async (section) => {
       for (const category of section.categories) {
         try {
-          const { data } = await api.get(`/api/products?${buildParams(category).toString()}`);
+          const { data } = await fetchProductsList(buildParams(category));
           const items = parseProductList(data).map(normalizeProduct).slice(0, ITEMS_PER_SECTION);
           if (items.length > 0) {
             return { sectionName: section.sectionName, items };

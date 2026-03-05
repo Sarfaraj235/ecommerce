@@ -14,6 +14,13 @@ export const api = axios.create({
     }
 });
 
+export const publicApi = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
+
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("jwt");
     if (isValidJwt(token)) {

@@ -25,7 +25,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
     };
 
     return (
-        <div className="relative">
+        <div className="rs-home-section-carousel relative">
             <div className="flex items-center gap-2 mb-2">
                 <h2 className="text-xl font-semibold text-gray-900">
                     {sectionName}
@@ -44,7 +44,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
                     activeIndex > 0 && (
                         <button
                             onClick={() => setActiveIndex(activeIndex - 1)}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-md w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition z-10"
+                            className="absolute left-0 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition hover:bg-gray-100 sm:flex"
                         >
                             <ChevronLeftIcon className="w-5 h-5" />
                         </button>
@@ -54,7 +54,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
                     activeIndex < totalItems - itemsPerSlide && (
                         <button
                             onClick={() => setActiveIndex(activeIndex + 1)}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-md w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition z-10"
+                            className="absolute right-0 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition hover:bg-gray-100 sm:flex"
                         >
                             <ChevronRightIcon className="w-5 h-5" />
                         </button>

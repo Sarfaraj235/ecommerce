@@ -8,7 +8,7 @@ function MainCarousel(){
 const items = MainCarouselData.map((item, idx)=> (
   <img
     key={idx}
-    className=""
+    className="rs-main-carousel-image h-[220px] w-full object-cover sm:h-[320px] md:h-[420px]"
     role='presentation'
     src={item.image}
     alt='hello'
@@ -19,4 +19,3 @@ return <AliceCarousel  mouseTracking items={items} disableButtonsControls contro
 
 }
 export default MainCarousel
-

@@ -1,4 +1,4 @@
-import { api } from "../config/ApiConfig";
+import { fetchNewArrivals, fetchProductById, fetchProductsList } from "./productApi";
 import { 
   FIND_PRODUCTS_FAILURE, 
   FIND_PRODUCTS_REQUEST, 
@@ -98,9 +98,7 @@ export const findProducts = (reqData) => async (dispatch) => {
         arrivalsParams.append("pageSize", String(pageSize ?? 12));
         if (sort) arrivalsParams.append("sort", sort);
 
-        const { data } = await api.get(
-          `/api/products/new-arrivals?${arrivalsParams.toString()}`
-        );
+        const { data } = await fetchNewArrivals(arrivalsParams);
         dispatch({
           type: FIND_PRODUCTS_SUCCESS,
           payload: data,
@@ -109,7 +107,7 @@ export const findProducts = (reqData) => async (dispatch) => {
       }
     }
 
-    const { data } = await api.get(`/api/products?${buildParams(category).toString()}`);
+    const { data } = await fetchProductsList(buildParams(category));
 
     const content = parseProductList(data);
 
@@ -121,7 +119,7 @@ export const findProducts = (reqData) => async (dispatch) => {
       category.includes("_")
     ) {
       const categoryWithSpaces = category.replace(/_/g, " ");
-      const retry = await api.get(`/api/products?${buildParams(categoryWithSpaces).toString()}`);
+      const retry = await fetchProductsList(buildParams(categoryWithSpaces));
       dispatch({
         type: FIND_PRODUCTS_SUCCESS,
         payload: retry.data,
@@ -135,7 +133,7 @@ export const findProducts = (reqData) => async (dispatch) => {
       const aliases = categoryAliasMap[key] || [];
       for (const alias of aliases) {
         try {
-          const retry = await api.get(`/api/products?${buildParams(alias).toString()}`);
+          const retry = await fetchProductsList(buildParams(alias));
           const retryContent = parseProductList(retry.data);
           if (retryContent.length > 0) {
             dispatch({
@@ -173,7 +171,7 @@ export const findProductsById = (reqData) => async (dispatch) => {
   
   try {
     // API call to fetch a single product by its ID
-    const { data } = await api.get(`/api/products/id/${productId}`);
+    const { data } = await fetchProductById(productId);
     
     dispatch({ 
       type: FIND_PRODUCT_BY_ID_SUCCESS, 

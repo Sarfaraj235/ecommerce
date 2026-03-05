@@ -4,7 +4,7 @@ import { Rating } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { findProductsById } from "../../../state/product/Action";
 import { addItemToCart, getCart } from "../../../state/cart/Action";
-import { api } from "../../../state/config/ApiConfig";
+import { fetchProductsList } from "../../../state/product/productApi";
 import HomeSectionCard from "../homeSectionCard/HomeSectionCard";
 import { calculateDiscount } from "../product/discountUtils";
 
@@ -121,7 +121,7 @@ export default function ProductDetails() {
 
       for (const candidate of candidates) {
         try {
-          const { data } = await api.get(`/api/products?${buildSimilarParams(candidate).toString()}`);
+          const { data } = await fetchProductsList(buildSimilarParams(candidate));
           const items = parseProductList(data)
             .map(normalizeProduct)
             .filter((item) => item && String(item.id) !== String(currentProduct.id))
@@ -206,21 +206,21 @@ export default function ProductDetails() {
 
   return (
     <div className="bg-white px-4 sm:px-6 lg:px-24">
-      <nav className="py-4 text-sm text-gray-500">
+      <nav className="py-3 text-xs text-gray-500 sm:py-4 sm:text-sm">
         Men / Clothing / <span className="font-medium text-gray-800">{title}</span>
       </nav>
 
-      <div className="mt-4 lg:grid lg:grid-cols-2 lg:gap-x-14">
+      <div className="mt-4 grid gap-y-8 lg:grid-cols-2 lg:gap-x-14">
         <div className="overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition hover:shadow-md">
-          <img src={image} alt={title} className="h-full w-full object-cover transition duration-300 hover:scale-105" />
+          <img src={image} alt={title} className="aspect-[4/5] w-full object-cover transition duration-300 hover:scale-105" />
         </div>
 
-        <div className="mt-10 lg:mt-0">
+        <div className="lg:mt-0">
           <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">{brand}</p>
-          <h1 className="mt-1 text-2xl font-bold text-gray-900">{title}</h1>
+          <h1 className="mt-1 text-xl font-bold text-gray-900 sm:text-2xl">{title}</h1>
 
-          <div className="mt-4 flex items-center gap-4">
-            <span className="text-2xl font-bold text-gray-900">Rs {price}</span>
+          <div className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4">
+            <span className="text-xl font-bold text-gray-900 sm:text-2xl">Rs {price}</span>
             {oldPrice && <span className="text-gray-400 line-through">Rs {oldPrice}</span>}
             {discount > 0 && (
               <span className="rounded-full bg-gradient-to-r from-green-500 to-emerald-600 px-3 py-1 text-xs font-semibold text-white">
@@ -229,19 +229,19 @@ export default function ProductDetails() {
             )}
           </div>
 
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             <Rating value={4.5} precision={0.5} readOnly size="small" />
             <span className="text-sm text-gray-500">56,540 Ratings | 3,870 Reviews</span>
           </div>
 
           <div className="mt-8">
             <h3 className="text-sm font-medium text-gray-700">Select Size</h3>
-            <div className="mt-4 flex gap-3">
+            <div className="mt-4 flex flex-wrap gap-2 sm:gap-3">
               {sizeOptions.map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`rounded-lg border px-6 py-2 text-sm font-medium transition ${
+                  className={`rounded-lg border px-4 py-2 text-sm font-medium transition sm:px-6 ${
                     activeSize === size
                       ? "border-indigo-600 bg-indigo-50 text-indigo-700 shadow-sm"
                       : "border-gray-300 hover:border-indigo-400 hover:bg-gray-50"
@@ -264,12 +264,12 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      <hr className="my-16" />
+      <hr className="my-12 sm:my-16" />
 
       {similarProducts.length > 0 && (
-        <section className="mt-16">
+        <section className="mt-12 sm:mt-16">
           <h1 className="mb-6 text-xl font-bold">Similar Products</h1>
-          <div className="flex flex-wrap gap-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {similarProducts.map((item) => (
               <HomeSectionCard
                 key={item.id}

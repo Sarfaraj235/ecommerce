@@ -1,12 +1,12 @@
 import React from "react";
  const HomeSectionCard = ({product, onClick} )=>  {
-  return (
+ return (
 
-    <div onClick={onClick} className="w-64 h-[300px] bg-white border rounded-xl shadow-md hover:shadow-xl transition p-3 cursor-pointer flex flex-col">
+    <div onClick={onClick} className="rs-home-card h-[300px] w-64 bg-white border rounded-xl shadow-md hover:shadow-xl transition p-3 cursor-pointer flex flex-col">
       <img 
         src={product.image}
         alt={product.title || "product"}
-        className="h-52 w-full object-cover object-top rounded-lg"
+        className="rs-home-card-image h-52 w-full object-cover object-top rounded-lg"
       />
 
       <div className="mt-2 h-10">

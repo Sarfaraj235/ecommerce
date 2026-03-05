@@ -79,7 +79,7 @@ export default function Cart() {
   const totalItems = Number(cart?.totalItem ?? items.reduce((sum, item) => sum + item.qty, 0));
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6">
+    <div className="min-h-screen bg-gray-100 py-4 sm:py-6">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           {loading && <p className="rounded bg-white p-4 text-sm text-gray-500">Loading cart...</p>}
@@ -98,9 +98,9 @@ export default function Cart() {
           )}
 
           {items.map((item) => (
-            <div key={item.id} className="flex gap-4 rounded bg-white p-4 shadow">
-              <div className="flex flex-col items-center gap-3">
-                <img src={item.image} alt={item.title} className="h-36 w-28 rounded object-cover" />
+            <div key={item.id} className="flex flex-col gap-4 rounded bg-white p-4 shadow sm:flex-row">
+              <div className="flex flex-col items-center gap-3 sm:items-start">
+                <img src={item.image} alt={item.title} className="h-44 w-full rounded object-cover sm:h-36 sm:w-28" />
                 <div className="flex items-center rounded border">
                   <button onClick={() => decrease(item)} className="px-3 py-1 text-lg font-bold text-gray-600">
                     -
@@ -119,7 +119,7 @@ export default function Cart() {
                 </p>
                 <p className="mt-1 text-xs text-gray-400">Seller: {item.seller}</p>
 
-                <div className="mt-3 flex items-center gap-3">
+                <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3">
                   <span className="text-lg font-bold">Rs {item.price}</span>
                   <span className="text-gray-400 line-through">Rs {item.oldPrice}</span>
                   {item.oldPrice > 0 && (

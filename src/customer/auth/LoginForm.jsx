@@ -7,14 +7,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getUser, clearAuthError } from "../../state/auth/Action";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { jwt, user, isLoading, error } = useSelector((state) => state.auth);
+  const redirectPath = new URLSearchParams(location.search).get("redirect");
 
   const getRole = (sourceUser) =>
     String(sourceUser?.role || sourceUser?.authorities?.[0]?.authority || "").toUpperCase();
@@ -33,8 +35,9 @@ export default function LoginForm() {
     if (!jwt || !user) return;
     const role = getRole(user);
     if (role === "ADMIN" || role === "ROLE_ADMIN") navigate("/admin", { replace: true });
+    else if (redirectPath && redirectPath.startsWith("/")) navigate(redirectPath, { replace: true });
     else navigate("/", { replace: true });
-  }, [jwt, user, navigate]);
+  }, [jwt, user, navigate, redirectPath]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
