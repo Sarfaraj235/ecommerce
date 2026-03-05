@@ -171,7 +171,7 @@ function Navigation() {
           <div className="fixed inset-0 z-40 flex">
             <DialogPanel
               transition
-              className="relative flex w-full max-w-[86vw] transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-closed:-translate-x-full sm:max-w-xs"
+              className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-closed:-translate-x-full"
             >
             {/* ---------- Close button ---------- */}
             <div className="flex px-4 pt-5 pb-2">
@@ -356,13 +356,13 @@ function Navigation() {
       ===================================================== */}
       <header className="relative bg-white">
         {/* Top banner */}
-        <p className="flex h-9 items-center justify-center bg-indigo-500 px-3 text-xs font-medium text-white sm:h-10 sm:px-4 sm:text-sm">
+        <p className="flex h-10 items-center justify-center bg-indigo-500 px-4 text-sm font-medium text-white">
           Get free delivery on orders over $100
         </p>
 
-        <nav className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="border-b border-gray-200">
-            <div className="flex h-14 items-center sm:h-16">
+            <div className="flex h-16 items-center">
               {/* ---------- Mobile menu button ---------- */}
               <button
                 type="button"
@@ -380,7 +380,7 @@ function Navigation() {
                   <img
                     alt="Logo"
                     src="/ss-fashion-logo.svg"
-                    className="h-8 w-auto sm:h-10"
+                    className="h-10 w-auto"
                   />
                 </button>
               </div>
@@ -588,20 +588,20 @@ function Navigation() {
                 <div className="flex lg:ml-6">
                   <button
                     onClick={() => navigate("/search")}
-                    className="p-1.5 text-gray-400 hover:text-gray-500 sm:p-2"
+                    className="p-2 text-gray-400 hover:text-gray-500"
                   >
                     <MagnifyingGlassIcon className="size-6" />
                   </button>
                 </div>
 
                 {/* ---------- Cart ---------- */}
-                <div className="ml-2 flow-root sm:ml-4 lg:ml-6">
+                <div className="ml-4 flow-root lg:ml-6">
                   <button
                     onClick={() => navigate("/cart")}
                     className="group -m-2 flex items-center p-2"
                   >
                     <ShoppingBagIcon className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500" />
-                    <span className="ml-1 text-sm font-medium text-gray-700 group-hover:text-gray-800 sm:ml-2">
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
                       0
                     </span>
                   </button>

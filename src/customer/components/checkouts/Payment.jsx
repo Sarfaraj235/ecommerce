@@ -113,7 +113,7 @@ export default function Payment({ setStep, orderId, address }) {
 
         <div className="mb-2 mt-4">
           <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Demo Result</p>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-3 gap-2">
             {["success", "failed", "cancelled"].map((status) => (
               <button
                 key={status}
@@ -134,7 +134,7 @@ export default function Payment({ setStep, orderId, address }) {
         {method === "card" && (
           <div className="space-y-3 mt-3">
             <input placeholder="Card Number" className="input" />
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex gap-3">
               <input placeholder="MM/YY" className="input" />
               <input placeholder="CVV" className="input" />
             </div>

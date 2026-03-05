@@ -260,8 +260,8 @@ export default function Product() {
       </Dialog>
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 py-4 sm:py-6">
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">New Arrivals</h1>
+        <div className="flex items-center justify-between border-b border-gray-200 py-6">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
 
           <div className="flex items-center gap-4">
             <Menu as="div" className="relative inline-block text-left">
@@ -350,7 +350,7 @@ export default function Product() {
               {loading && <p className="mb-4 text-sm text-gray-500">Loading products...</p>}
               {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
 
-              <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {!loading && normalizedProducts.length > 0 ? (
                   normalizedProducts.map((item) => <ProductCard key={item.id} product={item} />)
                 ) : !loading ? (
@@ -359,13 +359,13 @@ export default function Product() {
               </div>
 
               {!loading && (
-                <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-gradient-to-r from-white to-gray-50 px-3 py-3 sm:mt-10 sm:gap-4 sm:px-4">
+                <div className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gray-200 bg-gradient-to-r from-white to-gray-50 px-4 py-3">
                   <div className="text-sm text-gray-600">
                     Page <span className="font-semibold text-gray-900">{pageIndex + 1}</span> of{' '}
                     <span className="font-semibold text-gray-900">{totalPages}</span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 sm:gap-2">
+                  <div className="flex items-center gap-2">
                     <button
                       type="button"
                       disabled={!canGoPrev}
